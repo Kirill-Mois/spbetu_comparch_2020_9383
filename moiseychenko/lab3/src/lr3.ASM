@@ -30,15 +30,11 @@ f2:
 	add ax, bx	      ; ax = 6*i
 	sub ax, 10	      ; ax = 6*i - 10
 	mov i1, ax
-
-	mov ax, i
-	add ax, 1          ; ax = i + 1
-	mov bx, ax         ; bx = i + 1
-	shl ax, 1          ; ax = 2*(i + 1)
-	add ax, bx         ; ax = 3*(i + 1)
-	mov bx, 5
-	sub bx, ax         ; bx = 5 - 3*(1 + i)
-	mov i2, bx
+	
+	neg ax             ; ax = -6*i + 10
+	shr ax, 1          ; ax = -3*i + 5
+	sub ax, 3          ; ax = 5 -3*(i + 1)
+	mov i2, ax
 	jmp f5
 
 f2_1:
@@ -49,12 +45,11 @@ f2_1:
 	neg ax             ; ax = -(4*i + 3)
 	mov i1, ax
 
-  mov ax, i
-  add ax, 1          ; ax = i + 1
-  shl ax, 1          ; ax = 2*(i + 1)
-	sub ax, 4          ; ax = 2*(i + 1) - 4
-  mov i2, ax
-  jmp f5
+	neg ax             ; ax = 4*i + 3
+	sub ax, 7          ; ax = 4*i - 4
+	shr ax, 1          ; ax = 2*(i + 1) - 4
+	mov i2, ax
+	jmp f5
 
 f5:
 	mov bx, i1
@@ -63,8 +58,8 @@ f5:
 	jmp f5_1
 
 f5_neg:
-  neg bx
-  jmp f5_1
+	neg bx
+	jmp f5_1
 
 f5_1:
 	mov ax, k
@@ -73,33 +68,33 @@ f5_1:
 	jmp f5_sum         ;k != 0
 
 f5_cmp_6:
-  cmp bx, 6
-  jl res_i1
-  jmp res_6
+	cmp bx, 6
+	jl res_i1
+	jmp res_6
 
 res_i1:
-  mov res, bx
-  jmp f_end
+	mov res, bx
+	jmp f_end
 
 res_6:
-  mov res, 6
-  jmp f_end
+	mov res, 6
+	jmp f_end
 
 f5_sum:
-  mov cx, i2
-  cmp cx, 0
-  jl f5_neg_sum
-  jmp f5_res_sum
+	mov cx, i2
+	cmp cx, 0
+	jl f5_neg_sum
+	jmp f5_res_sum
 
 f5_neg_sum:
-  neg cx
-  jmp f5_res_sum
+	neg cx
+	jmp f5_res_sum
 
 f5_res_sum:
-  mov ax, bx
-  add ax, cx
-  mov res, ax
-  jmp f_end
+	mov ax, bx
+	add ax, cx
+	mov res, ax
+	jmp f_end
 
 f_end:
 	mov ah, 4ch
