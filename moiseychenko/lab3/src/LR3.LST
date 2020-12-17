@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 5.10                  12/17/20 03:00:4
+Microsoft (R) Macro Assembler Version 5.10                  12/17/20 11:05:2
                                                              Page     1-1
 
 
@@ -29,7 +29,7 @@
  0005				f2:
  0005  A1 0000 R			mov ax, a
  0008  3B 06 0002 R			cmp ax, b
- 000C  7F 29				jg f2_1           ; a > b
+ 000C  7F 1E				jg f2_1           ; a > b
  000E  A1 0004 R			mov ax, i
  0011  D1 E0				shl ax, 1	        ; ax = 2*i
  0013  8B D8				mov bx, ax	      ; bx = 2*i
@@ -38,92 +38,83 @@
  0019  2D 000A				sub ax, 10	      ; ax = 6*i - 10
  001C  A3 0008 R			mov i1, ax
 				
- 001F  A1 0004 R			mov ax, i
- 0022  05 0001				add ax, 1          ; ax = i + 1
- 0025  8B D8				mov bx, ax         ; bx = i + 1
- 0027  D1 E0				shl ax, 1          ; ax = 2*(i + 1)
- 0029  03 C3				add ax, bx         ; ax = 3*(i + 1)
- 002B  BB 0005				mov bx, 5
- 002E  2B D8				sub bx, ax         ; bx = 5 - 3*(1 + i)
- 0030  89 1E 000A R			mov i2, bx
- 0034  EB 21 90				jmp f5
+ 001F  F7 D8				neg ax             ; ax = -6*i + 10
+ 0021  D1 E8				shr ax, 1          ; ax = -3*i + 5
+ 0023  2D 0003				sub ax, 3          ; ax = 5 -3*(i + 1)
+ 0026  A3 000A R			mov i2, ax
+ 0029  EB 1D 90				jmp f5
 				
- 0037				f2_1:
- 0037  A1 0004 R			mov ax, i
- 003A  D1 E0				shl ax, 1          ; ax = 2*i
- 003C  D1 E0				shl ax, 1          ; ax = 4*i
- 003E  05 0003				add ax, 3          ; ax = 4*i + 3
- 0041  F7 D8				neg ax             ; ax = -(4*i + 3)
- 0043  A3 0008 R			mov i1, ax
+ 002C				f2_1:
+ 002C  A1 0004 R			mov ax, i
+ 002F  D1 E0				shl ax, 1          ; ax = 2*i
+ 0031  D1 E0				shl ax, 1          ; ax = 4*i
+ 0033  05 0003				add ax, 3          ; ax = 4*i + 3
+ 0036  F7 D8				neg ax             ; ax = -(4*i + 3)
+ 0038  A3 0008 R			mov i1, ax
 				
-Microsoft (R) Macro Assembler Version 5.10                  12/17/20 03:00:4
+ 003B  F7 D8				neg ax             ; ax = 4*i + 3
+ 003D  2D 0007				sub ax, 7          ; ax = 4*i - 4
+ 0040  D1 E8				shr ax, 1          ; ax = 2*(i + 1) - 4
+ 0042  A3 000A R			mov i2, ax
+Microsoft (R) Macro Assembler Version 5.10                  12/17/20 11:05:2
                                                              Page     1-2
 
 
- 0046  A1 0004 R		  mov ax, i
- 0049  05 0001			  add ax, 1          ; ax = i + 1
- 004C  D1 E0			  shl ax, 1          ; ax = 2*(i + 1)
- 004E  2D 0004				sub ax, 4          ; ax = 2*(i + 1) - 4
- 0051  A3 000A R		  mov i2, ax
- 0054  EB 01 90			  jmp f5
+ 0045  EB 01 90				jmp f5
 				
- 0057				f5:
- 0057  8B 1E 0008 R			mov bx, i1
- 005B  83 FB 00				cmp bx, 0
- 005E  7C 03				jl f5_neg
- 0060  EB 06 90				jmp f5_1
+ 0048				f5:
+ 0048  8B 1E 0008 R			mov bx, i1
+ 004C  83 FB 00				cmp bx, 0
+ 004F  7C 03				jl f5_neg
+ 0051  EB 06 90				jmp f5_1
 				
- 0063				f5_neg:
- 0063  F7 DB			  neg bx
- 0065  EB 01 90			  jmp f5_1
+ 0054				f5_neg:
+ 0054  F7 DB				neg bx
+ 0056  EB 01 90				jmp f5_1
 				
- 0068				f5_1:
- 0068  A1 0006 R			mov ax, k
- 006B  3D 0000				cmp ax, 0
- 006E  74 03				je f5_cmp_6        ;k = 0
- 0070  EB 19 90				jmp f5_sum         ;k != 0
+ 0059				f5_1:
+ 0059  A1 0006 R			mov ax, k
+ 005C  3D 0000				cmp ax, 0
+ 005F  74 03				je f5_cmp_6        ;k = 0
+ 0061  EB 19 90				jmp f5_sum         ;k != 0
 				
- 0073				f5_cmp_6:
- 0073  83 FB 06			  cmp bx, 6
- 0076  7C 03			  jl res_i1
- 0078  EB 08 90			  jmp res_6
+ 0064				f5_cmp_6:
+ 0064  83 FB 06				cmp bx, 6
+ 0067  7C 03				jl res_i1
+ 0069  EB 08 90				jmp res_6
 				
- 007B				res_i1:
- 007B  89 1E 000C R		  mov res, bx
- 007F  EB 25 90			  jmp f_end
+ 006C				res_i1:
+ 006C  89 1E 000C R			mov res, bx
+ 0070  EB 25 90				jmp f_end
 				
- 0082				res_6:
- 0082  C7 06 000C R 0006	  mov res, 6
- 0088  EB 1C 90			  jmp f_end
+ 0073				res_6:
+ 0073  C7 06 000C R 0006		mov res, 6
+ 0079  EB 1C 90				jmp f_end
 				
- 008B				f5_sum:
- 008B  8B 0E 000A R		  mov cx, i2
- 008F  83 F9 00			  cmp cx, 0
- 0092  7C 03			  jl f5_neg_sum
- 0094  EB 06 90			  jmp f5_res_sum
+ 007C				f5_sum:
+ 007C  8B 0E 000A R			mov cx, i2
+ 0080  83 F9 00				cmp cx, 0
+ 0083  7C 03				jl f5_neg_sum
+ 0085  EB 06 90				jmp f5_res_sum
 				
- 0097				f5_neg_sum:
- 0097  F7 D9			  neg cx
- 0099  EB 01 90			  jmp f5_res_sum
+ 0088				f5_neg_sum:
+ 0088  F7 D9				neg cx
+ 008A  EB 01 90				jmp f5_res_sum
 				
- 009C				f5_res_sum:
- 009C  8B C3			  mov ax, bx
- 009E  03 C1			  add ax, cx
- 00A0  A3 000C R		  mov res, ax
- 00A3  EB 01 90			  jmp f_end
+ 008D				f5_res_sum:
+ 008D  8B C3				mov ax, bx
+ 008F  03 C1				add ax, cx
+ 0091  A3 000C R			mov res, ax
+ 0094  EB 01 90				jmp f_end
 				
- 00A6				f_end:
- 00A6  B4 4C				mov ah, 4ch
-Microsoft (R) Macro Assembler Version 5.10                  12/17/20 03:00:4
-                                                             Page     1-3
-
-
- 00A8  CD 21				int 21h
+ 0097				f_end:
+ 0097  B4 4C				mov ah, 4ch
+ 0099  CD 21				int 21h
 				
- 00AA				Main	ENDP
- 00AA				CODE	ENDS
+ 009B				Main	ENDP
+ 009B				CODE	ENDS
 					END Main
-Microsoft (R) Macro Assembler Version 5.10                  12/17/20 03:00:4
+Microsoft (R) Macro Assembler Version 5.10                  12/17/20 11:05:2
                                                              Symbols-1
 
 
@@ -132,7 +123,7 @@ Segments and Groups:
                 N a m e         	Length	 Align	Combine Class
 
 ASTACK . . . . . . . . . . . . .  	0040	PARA	STACK	
-CODE . . . . . . . . . . . . . .  	00AA	PARA	NONE	
+CODE . . . . . . . . . . . . . .  	009B	PARA	NONE	
 DATA . . . . . . . . . . . . . .  	000E	PARA	NONE	
 
 Symbols:            
@@ -144,15 +135,15 @@ A  . . . . . . . . . . . . . . .  	L WORD	0000	DATA
 B  . . . . . . . . . . . . . . .  	L WORD	0002	DATA
 
 F2 . . . . . . . . . . . . . . .  	L NEAR	0005	CODE
-F2_1 . . . . . . . . . . . . . .  	L NEAR	0037	CODE
-F5 . . . . . . . . . . . . . . .  	L NEAR	0057	CODE
-F5_1 . . . . . . . . . . . . . .  	L NEAR	0068	CODE
-F5_CMP_6 . . . . . . . . . . . .  	L NEAR	0073	CODE
-F5_NEG . . . . . . . . . . . . .  	L NEAR	0063	CODE
-F5_NEG_SUM . . . . . . . . . . .  	L NEAR	0097	CODE
-F5_RES_SUM . . . . . . . . . . .  	L NEAR	009C	CODE
-F5_SUM . . . . . . . . . . . . .  	L NEAR	008B	CODE
-F_END  . . . . . . . . . . . . .  	L NEAR	00A6	CODE
+F2_1 . . . . . . . . . . . . . .  	L NEAR	002C	CODE
+F5 . . . . . . . . . . . . . . .  	L NEAR	0048	CODE
+F5_1 . . . . . . . . . . . . . .  	L NEAR	0059	CODE
+F5_CMP_6 . . . . . . . . . . . .  	L NEAR	0064	CODE
+F5_NEG . . . . . . . . . . . . .  	L NEAR	0054	CODE
+F5_NEG_SUM . . . . . . . . . . .  	L NEAR	0088	CODE
+F5_RES_SUM . . . . . . . . . . .  	L NEAR	008D	CODE
+F5_SUM . . . . . . . . . . . . .  	L NEAR	007C	CODE
+F_END  . . . . . . . . . . . . .  	L NEAR	0097	CODE
 
 I  . . . . . . . . . . . . . . .  	L WORD	0004	DATA
 I1 . . . . . . . . . . . . . . .  	L WORD	0008	DATA
@@ -160,23 +151,27 @@ I2 . . . . . . . . . . . . . . .  	L WORD	000A	DATA
 
 K  . . . . . . . . . . . . . . .  	L WORD	0006	DATA
 
-MAIN . . . . . . . . . . . . . .  	F PROC	0000	CODE	Length = 00AA
+MAIN . . . . . . . . . . . . . .  	F PROC	0000	CODE	Length = 009B
 
 RES  . . . . . . . . . . . . . .  	L WORD	000C	DATA
-RES_6  . . . . . . . . . . . . .  	L NEAR	0082	CODE
-RES_I1 . . . . . . . . . . . . .  	L NEAR	007B	CODE
+RES_6  . . . . . . . . . . . . .  	L NEAR	0073	CODE
+RES_I1 . . . . . . . . . . . . .  	L NEAR	006C	CODE
 
 @CPU . . . . . . . . . . . . . .  	TEXT  0101h		
 @FILENAME  . . . . . . . . . . .  	TEXT  lr3		
 @VERSION . . . . . . . . . . . .  	TEXT  510		
 
-Microsoft (R) Macro Assembler Version 5.10                  12/17/20 03:00:4
-                                                             Symbols-2
-
-
+Microsoft (R) Macro Assembler Version 5.10                  12/17/20 11:05:2
 
-    110 Source  Lines
-    110 Total   Lines
+                                                             Symbols-2
+
+
+
+
+
+
+    105 Source  Lines
+    105 Total   Lines
      28 Symbols
 
   48068 + 459192 Bytes symbol space free
