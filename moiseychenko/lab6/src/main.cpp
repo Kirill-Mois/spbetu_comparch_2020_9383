@@ -75,7 +75,13 @@ int main() {
 	cout << "-------------------------" << endl;
 	file << "-------------------------" << endl;
 	for (int i = 0; i < NInt; i++) {
-		file << "  " << i + 1 << "  |  " << LGrInt[i] << ", " << LGrInt[i + 1] << "  |  " << result[i] << "\n";
-		cout << "  " << i + 1 << "  |  " << LGrInt[i] << ", " << LGrInt[i + 1] << "  |  " << result[i] << "\n";
+		if (i == NInt - 1) {
+			file << "  " << i + 1 << "  |  [" << LGrInt[i] << ", " << LGrInt[i + 1] << "]  |  " << result[i] << "\n";
+			cout << "  " << i + 1 << "  |  [" << LGrInt[i] << ", " << LGrInt[i + 1] << "]  |  " << result[i] << "\n";
+		}
+		else {
+			file << "  " << i + 1 << "  |  [" << LGrInt[i] << ", " << LGrInt[i + 1] << ")  |  " << result[i] << "\n";
+			cout << "  " << i + 1 << "  |  [" << LGrInt[i] << ", " << LGrInt[i + 1] << ")  |  " << result[i] << "\n";
+		}
 	}
 }

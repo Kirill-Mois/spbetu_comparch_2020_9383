@@ -12,15 +12,12 @@ distribution proc C arr: dword, LGrInt: dword, NumRanDat: dword, result: dword
 	my_loop:
 		mov eax, [ebx] ; eax = current_arr
 		add ebx, 4 ; ebx = next_arr
-		cmp eax, [esi]
-		jl loop_end ; if current_arr < current_LGrInt
-		
-		; current_arr >= current_LGrInt
-	comparison:
-		cmp eax, [esi+4] ; if current_arr > next_LGrInt
-		jg next_LGrInt
 
-		; if current_arr <= next_LGrInt: current_result++
+	comparison:
+		cmp eax, [esi+4]
+		jge next_LGrInt ; if current_arr >= next_LGrInt
+
+		; if current_arr < next_LGrInt: current_result++
 		mov eax, [edi]
 		add eax, 1
 		mov [edi], eax
